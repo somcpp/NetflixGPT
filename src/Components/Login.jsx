@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 
 export const Login = () => {
+  const [isSignInForm,setIsSignInForm] = useState(true);
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  }
   return (
     <div className="relative min-h-screen">
       {/* Header */}
@@ -17,7 +21,13 @@ export const Login = () => {
       {/* Centered Form */}
       <div className="flex justify-center items-center min-h-screen">
         <form className="flex flex-col w-3/12 p-12 bg-black/60 text-white rounded-lg">
-          <h1 className="text-2xl font-bold mb-6">Sign In</h1>
+          <h1 className="text-2xl font-bold mb-6">{isSignInForm? "Sign Up" : "Sign In"}</h1>
+
+          {isSignInForm && <input
+            type="text"
+            placeholder="Full Name"
+            className="p-3 mb-4 bg-gray-800 rounded outline-none"
+          />}
 
           <input
             type="text"
@@ -32,8 +42,9 @@ export const Login = () => {
           />
 
           <button className="p-3 bg-red-600 rounded font-semibold hover:bg-red-700">
-            Sign In
+            {isSignInForm? "Sign In" : "Sign Up"}
           </button>
+          <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>{isSignInForm? "New to Netflix? sign up now" : "Already registered Sign in Now"}</p>
         </form>
       </div>
     </div>

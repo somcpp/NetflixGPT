@@ -1,10 +1,23 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import Header from "./Header";
+import { CheckValidData } from "../Utils/Validate";
+
 
 export const Login = () => {
   const [isSignInForm,setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(false);
+
+  const email = useRef(null);
+  const name = useRef(null);
+  const password = useRef(null);
+
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+  }
+  const handleButtonClick = () => {
+    //validate the form data
+    const message = CheckValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
   }
   return (
     <div className="relative min-h-screen">
@@ -20,31 +33,34 @@ export const Login = () => {
 
       {/* Centered Form */}
       <div className="flex justify-center items-center min-h-screen">
-        <form className="flex flex-col w-3/12 p-12 bg-black/60 text-white rounded-lg">
-          <h1 className="text-2xl font-bold mb-6">{isSignInForm? "Sign Up" : "Sign In"}</h1>
+        <form onSubmit={(e) => e.preventDefault()} className="flex flex-col w-3/12 p-12 bg-black/60 text-white rounded-lg">
+          <h1 className="text-2xl font-bold mb-6">{isSignInForm? "Sign In" : "Sign Up"}</h1>
 
-          {isSignInForm && <input
+          {!isSignInForm && <input
+            ref={name}
             type="text"
             placeholder="Full Name"
             className="p-3 mb-4 bg-gray-800 rounded outline-none"
           />}
 
           <input
+            ref={email}
             type="text"
             placeholder="Email Address"
             className="p-3 mb-4 bg-gray-800 rounded outline-none"
           />
 
           <input
+            ref={password}
             type="password"
             placeholder="Password"
-            className="p-3 mb-6 bg-gray-800 rounded outline-none"
+            className="p-3 mb-1 bg-gray-800 rounded outline-none"
           />
-
-          <button className="p-3 bg-red-600 rounded font-semibold hover:bg-red-700">
+          <p className="text-red-500 py-3 font-semibold">{errorMessage}</p>
+          <button onClick={handleButtonClick} className="p-3 bg-red-600 rounded font-semibold hover:bg-red-700">
             {isSignInForm? "Sign In" : "Sign Up"}
           </button>
-          <p className="py-4 cursor-pointer" onClick={toggleSignInForm}>{isSignInForm? "New to Netflix? sign up now" : "Already registered Sign in Now"}</p>
+          <p className="py-4 cursor-pointer" onClick={() => toggleSignInForm()}>{isSignInForm?"New to Netflix? sign up now" : "Already registered Sign in Now" }</p>
         </form>
       </div>
     </div>
